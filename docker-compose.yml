@@ -1,0 +1,23 @@
+version: "2"
+services:
+  bundler:
+    container_name: bundler
+    image: busybox
+    volumes:
+      - /gems
+
+  app:
+    container_name: lm-sensors
+    image: lm-sensors
+    tty: true
+    stdin_open: true
+    build: .
+    command: ./start
+    pid: host
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/app
+    volumes_from:
+      - bundler
+    restart: always
